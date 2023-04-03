@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AES_128_CBC_IN_HEX</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>
+
+function encrypt(valueStringHex, keyStringHex,ivv) {
+//const CryptoJS = require('crypto-js');
+const value =  CryptoJS.enc.Hex.parse(valueStringHex);
+const key  = CryptoJS.enc.Hex.parse(keyStringHex);
+const ivvar   = CryptoJS.enc.Hex.parse(ivv);
+const encryptedStringHex = CryptoJS.AES.encrypt(value, key, {iv: ivvar, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.NoPadding}).ciphertext.toString();
+return encryptedStringHex;
+}
+
+// encrypt('5ff58680541c5a5903f4833dfaa4281f', '41435231323535552d4a312041757458')
+// returns 79d8a373d47bb25df3c1956b04106b15
+function decrypt(valueStringHex, keyStringHex,ivv) {
+//const CryptoJS = require('crypto-js');
+const value = CryptoJS.enc.Hex.parse(valueStringHex);
+const key = CryptoJS.enc.Hex.parse(keyStringHex);
+const ivvar   = CryptoJS.enc.Hex.parse(ivv);
+const decryptedStringHex = CryptoJS.AES.decrypt({ciphertext: value}, key, {iv: ivvar, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.NoPadding});
+return decryptedStringHex.toString();
+}
+
+function fun_encrypt(){
+var decr	= document.getElementById('in1').value;
+var key		= document.getElementById('in2').value;
+var iv		= document.getElementById('in3').value;
+var enc= encrypt(decr,key,iv);
+document.getElementById('in4').value=enc;
+}
+
+function fun_decrypt(){
+var encr	= document.getElementById('in5').value;
+var key		= document.getElementById('in6').value;
+var iv		= document.getElementById('in7').value;
+var decr= decrypt(encr,key,iv);
+document.getElementById('in8').value=decr;
+}
+
+window.onload = function() {
+    getPayload();
+};
+</script>
+</head>
+<body>
+<TABLE>
+<TR><TD colspan="2">Kodowanie tekstu w AES-128 CBC w javascript:</TD></TR>
+<TR><TD>Tekst do zakodowania</TD><TD>:<input type="text" id="in1" style="width:500px" value="2F2F0E038335000000002F2F2F2F2F2F"></TD></TR>
+<TR><TD>Klucz</TD><TD>:<input type="text" id="in2" style="width:500px" value="31313131313131313131313131313131"></TD></TR>
+<TR><TD>Wektor inicjujący</TD><TD>:<input type="text" id="in3" style="width:500px" value="A35C785634120002BCBCBCBCBCBCBCBC"></TD></TR>
+<TR><TD>Tekst zakodowany</TD><TD>:<input type="text" id="in4" style="width:500px" value=""></TD></TR>
+<TR><TD></TD><TD><a href="javascript:fun_encrypt()">Zakoduj</a></TD></TR>
+<TR><TD colspan="2"></TD></TR>
+<TR><TD colspan="2"></TD></TR>
+<TR><TD colspan="2">Odkowanie tekstu w AES-128 CBC w javascript:</TD></TR>
+<TR><TD>Tekst do odkodowania</TD><TD>:<input type="text" id="in5" style="width:500px" value="5c459eec634fb0fb11bae430f7d650bb"></TD></TR>
+<TR><TD>Klucz</TD><TD>:<input type="text" id="in6" style="width:500px" value="31313131313131313131313131313131"></TD></TR>
+<TR><TD>Wektor inicjujący</TD><TD>:<input type="text" id="in7" style="width:500px" value="A35C785634120002BCBCBCBCBCBCBCBC"></TD></TR>
+<TR><TD>Tekst odkodowany</TD><TD>:<input type="text" id="in8" style="width:500px" value=""></TD></TR>
+<TR><TD></TD><TD><a href="javascript:fun_decrypt()">Odkoduj</a></TD></TR>
+</TABLE>
+</body>
+</html>
+
